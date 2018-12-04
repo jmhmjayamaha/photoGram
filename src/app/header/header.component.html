@@ -1,0 +1,21 @@
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">DemoGram</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:
+        true}"><a routerLink="/">Home</a></li>
+      <li routerLinkActive="active-link" *ngIf="isLoggedIn"><a routerLink="/allPost">All Posts</a></li>
+      <li routerLinkActive="active-link" *ngIf="isLoggedIn"><a routerLink="/following">Following</a></li>
+      <li routerLinkActive="active-link" *ngIf="isLoggedIn"><a routerLink="/favorites">Favorites</a></li>
+      <li routerLinkActive="active-link" *ngIf="isLoggedIn"><a routerLink="/myPosts">My Posts</a></li>
+    </ul>
+
+    <ul class="nav navbar-nav navbar-right">
+      <li routerLinkActive="active-link"><a routerLink="/sign-up">Sign Up</a></li>
+      <li routerLinkActive="active-link"><a routerLink="/login">Login</a></li>
+      <li *ngIf="isLoggedIn"><a href="#">Logout</a></li>
+    </ul>
+  </div>
+</nav>
