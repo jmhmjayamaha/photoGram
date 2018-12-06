@@ -13,9 +13,9 @@
     </ul>
 
     <ul class="nav navbar-nav navbar-right">
-      <li routerLinkActive="active-link"><a routerLink="/sign-up">Sign Up</a></li>
-      <li routerLinkActive="active-link"><a routerLink="/login">Login</a></li>
-      <li *ngIf="isLoggedIn"><a href="#">Logout</a></li>
+      <li routerLinkActive="active-link" *ngIf="!isLoggedIn"><a routerLink="/sign-up">Sign Up</a></li>
+      <li routerLinkActive="active-link" *ngIf="!isLoggedIn"><a routerLink="/login">Login</a></li>
+      <li *ngIf="isLoggedIn" (click)="logout()"><a>Logout</a></li>
     </ul>
   </div>
 </nav>

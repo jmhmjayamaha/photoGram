@@ -16,6 +16,7 @@ import { RouteGuard } from './auth/route-guard';
 import { NotificationComponent } from './notification/notification.component';
 import { NotificationService } from './shared/notification.service';
 import { DatabaseService } from './shared/database.service';
+import { UserService } from './shared/user.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import { DatabaseService } from './shared/database.service';
     AppRoutingModule,
     FormsModule
   ],
-  providers: [RouteGuard, NotificationService, DatabaseService],
+  providers: [RouteGuard, NotificationService, DatabaseService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

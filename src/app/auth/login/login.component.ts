@@ -3,6 +3,8 @@ import { NgForm } from '@angular/forms';
 import * as firebase from 'firebase';
 import { NotificationService } from 'src/app/shared/notification.service';
 import { DatabaseService } from 'src/app/shared/database.service';
+import { UserService } from 'src/app/shared/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +13,11 @@ import { DatabaseService } from 'src/app/shared/database.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private _notifier :NotificationService, private _databaseService : DatabaseService ) { }
+  constructor(private _notifier :NotificationService, 
+              private _databaseService : DatabaseService,
+              private _userService: UserService,
+              private router: Router
+  ) { }
 
   ngOnInit() {
   }
@@ -33,7 +39,9 @@ export class LoginComponent implements OnInit {
             })
             .then(userDataFire => {
               if(userDataFire) {
-                console.log(userDataFire);
+                this._userService.set(userDataFire);
+                this.router.navigate(['/allPost']);
+
               }
             }).catch(err => {
               this._notifier.display('error', err.message);
