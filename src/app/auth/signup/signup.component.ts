@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import * as firebase from 'firebase';
+import { NotificationService } from 'src/app/shared/notification.service';
 
 @Component({
   selector: 'app-signup',
@@ -9,7 +10,7 @@ import * as firebase from 'firebase';
 })
 export class SignupComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _notifier: NotificationService ) { }
 
   ngOnInit() {
   }
@@ -23,6 +24,10 @@ export class SignupComponent implements OnInit {
             .then(userData => {
               userData.sendEmailVerification();
 
+              const message = `A verification email has been sent to ${email}. kindly check your inbox and follow the steps
+              in the verification email. Once verification is complete, please login to the application`;
+              this._notifier.display('success', message);
+
               return firebase.database().ref('users/' + userData.uid).set({
                 email : email,
                 uid: userData.uid,
@@ -31,9 +36,10 @@ export class SignupComponent implements OnInit {
               })
             })
             .then(() => {
-              // firebase.auth().signOut();
+              firebase.auth().signOut();
             })
             .catch(err => {
+              this._notifier.display('error', err.message);
               console.log(err);
             })
   }
