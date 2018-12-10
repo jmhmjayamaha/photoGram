@@ -37,11 +37,11 @@ export class HeaderComponent implements OnInit {
       if(userData && userData.emailVerified) {
         this.isLoggedIn = true;
         const user = this._userService.getUser();
-
-        this.name = user.fullname;
-        this.email = user.email;
-        this.uid = user.uid;
-
+        if(user && user.fullname) {
+          this.name = user.fullname;
+          this.email = user.email;
+          this.uid = user.uid;
+        }
       }
       else {
         this.isLoggedIn = false;

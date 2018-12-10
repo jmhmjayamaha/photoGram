@@ -23,7 +23,7 @@ export class MyPostsComponent implements OnInit {
       this._database.uploadFile(file)
           .then( data => {
             this.notifier.display('success', 'Image uploaded successfully');
-            console.log(data['fileUrl']);
+            this._database.handleImageUpload(data);
           }).catch(err => {
             this.notifier.display('error', err.message);
           })

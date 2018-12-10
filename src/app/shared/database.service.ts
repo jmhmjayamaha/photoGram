@@ -1,9 +1,14 @@
 import { Injectable } from "@angular/core";
 import * as firebase from 'firebase';
 import { registerContentQuery } from "@angular/core/src/render3";
+import { UserService } from "./user.service";
 
 @Injectable()
 export class DatabaseService {
+
+    constructor(private _userService: UserService) {
+
+    }
 
     getUser(uid) {
         const ref = firebase.database().ref('users/' + uid);
@@ -38,5 +43,39 @@ export class DatabaseService {
               resolve({fileName, fileUrl});
             });
         });
+    }
+
+    handleImageUpload(data) {
+        const user = this._userService.getUser();
+
+        const newPersonalPostKey = firebase.database().ref().child('myPosts').push().key;
+        const newpersonalDetails = {
+            fileUrl: data.fileUrl,
+            name: data.fileName,
+            creationDate: new Date().toString()
+        }
+
+        const allPostKey = firebase.database().ref('allPosts').push().key;
+        const allPostDetails = {
+            fileUrl: data.fileUrl,
+            name: data.fileName,
+            creationDate: new Date().toString(),
+            uploadedBy: user
+        }
+
+        const imageDetails = {
+            fileUrl : data.fileUrl,
+            name : data.fileName,
+            creationDate: new Date().toString(),
+            uploadedBy: user,
+            favoriteCount: 0
+        }
+        const update = {};
+
+        update['/myPosts/' + user.uid + "/" + newPersonalPostKey ] = newpersonalDetails;
+        update['/allPosts/' + allPostKey] = allPostDetails;
+        update['/images/' + data.fileName] = imageDetails;
+
+        return firebase.database().ref().update(update);
     }
 }
