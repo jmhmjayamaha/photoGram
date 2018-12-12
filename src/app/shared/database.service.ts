@@ -78,4 +78,8 @@ export class DatabaseService {
 
         return firebase.database().ref().update(update);
     }
+
+    getUserPostsList(uid) {
+        return firebase.database().ref('myPosts').child(uid);
+    }
 }
