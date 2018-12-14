@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as firebase from "firebase";
 import _ from 'lodash';
+import { DatabaseService } from '../shared/database.service';
+import { NotificationService } from '../shared/notification.service';
 
 @Component({
   selector: 'app-all-posts',
@@ -13,7 +15,7 @@ export class AllPostsComponent implements OnInit, OnDestroy {
   allRef: any;
   all: any = [];
 
-  constructor() { }
+  constructor(private _database : DatabaseService, private _notifier: NotificationService) { }
 
   ngOnInit() {
     this.allRef = firebase.database().ref("allPosts").limitToFirst(3);
@@ -47,6 +49,25 @@ export class AllPostsComponent implements OnInit, OnDestroy {
       });
 
     }
+  }
+
+  onFavoritesClicked(imageData) {
+    this._database.handleFavoriteClicked(imageData)
+        .then(data => {
+          this._notifier.display('success', 'Image is added to favorite');
+        }).catch(err => {
+          this._notifier.display('error', err.message);
+        })
+  }
+
+  onFollowClicked(imageData) {
+    this._database.followUser(imageData.uploadedBy)
+        .then(data => {
+          this._notifier.display('success', 'You are following the user : ' + imageData.uploadedBy.fullname);
+        }).catch(err => {
+          this._notifier.display('error', err.message);
+        })
+
   }
 
   ngOnDestroy() {

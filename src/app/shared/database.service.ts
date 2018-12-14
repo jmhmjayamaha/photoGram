@@ -82,4 +82,28 @@ export class DatabaseService {
     getUserPostsList(uid) {
         return firebase.database().ref('myPosts').child(uid);
     }
+
+    handleFavoriteClicked(imageData) {
+        const uid = firebase.auth().currentUser.uid;
+
+        const updates = {};
+
+        updates["/images/" + imageData.name + "/oldFavoriteCount"] = imageData.favoriteCount;
+        updates["/images/" + imageData.name + "/favoriteCount"] = imageData.favoriteCount + 1;
+        updates["/favorite/" + uid + "/" + imageData.name] = imageData
+
+        return firebase.database().ref().update(updates);
+        
+    }
+
+    followUser(uploadedByUser) {
+
+        const uid = firebase.auth().currentUser.uid;
+
+        const updates = {};
+
+        updates['/follow/' + uid + '/' + uploadedByUser.uid] = true
+
+        return firebase.database().ref().update(updates);
+    }
 }
